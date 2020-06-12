@@ -8,11 +8,49 @@
 @date: 2020/6/12
 """
 
+import os
+import random
 from lib.common import mylogger
+from lib import common
+
 
 # 1. 注册功能
 def register():
-    mylogger.info('注册')
+    mylogger.info('开始注册')
+    inp_username = input('请输入注册用户名：').strip()
+    verfication_code = verify_code()
+    print('验证码为：{0}'.format(verfication_code))
+    inp_verfication_code = input('请输入验证码：').strip()
+
+    if inp_verfication_code == verfication_code:
+        while True:
+            inp_password = input('请输入登录密码：')
+            inp_password2 = input('请再输入一次: ')
+
+            if inp_password == inp_password2:
+                try:
+                    with open(common.DB_FILE, mode='a', encoding='utf-8') as f:
+                        f.writelines(inp_username)
+                        f.writelines(inp_password)
+                        break
+                except FileNotFoundError as e:
+                    print(e)
+
+            else:
+                print('2次输入的密码不同，请重新输入')
+
+    else:
+        print('请输入正确的验证码！')
+
+
+def verify_code(num=4):
+    verification_code = ''
+    for i in range(4):
+        char_random = chr(random.randint(65, 90))
+        digit_random = str(random.randint(0, 9))
+        verification_code += random.choice([char_random, digit_random])
+
+    return verification_code
 
 
 # 2. 登录功能
@@ -105,5 +143,5 @@ def run():
 
 
 if __name__ == '__main__':
-
     run()
+    # print(verify_code())
