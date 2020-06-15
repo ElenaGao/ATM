@@ -29,14 +29,8 @@
 import os
 import time
 
-standard_format = '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(filename)s:%(lineno)d]' \
-                  '[%(levelname)s][%(message)s]'
-
-simple_format = '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
-
-test_format = '%(asctime)s] %(message)s'
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 项目根路径
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 LOG_DIR = os.path.join(BASE_DIR, 'log')
 
@@ -45,6 +39,18 @@ FILE_NAME = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime()) + '.log'
 
 LOG_FILE = os.path.join(LOG_DIR, FILE_NAME)
 
+# user_data文件夹目录路径
+USER_DATA_PATH = os.path.join(BASE_DIR,'db','user_data')
+
+
+# 日志格式
+
+standard_format = '[%(asctime)s][%(threadName)s:%(thread)d][task_id:%(name)s][%(filename)s:%(lineno)d]' \
+                  '[%(levelname)s][%(message)s]'
+
+simple_format = '[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d]%(message)s'
+
+test_format = '%(asctime)s] %(message)s'
 
 # print(LOG_FILE)
 

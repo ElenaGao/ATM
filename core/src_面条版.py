@@ -4,15 +4,12 @@
 """
 @version: 3.8
 @author: elena
-@file: src_分层版.py
+@file: src_面条版.py
 @date: 2020/6/12
 """
 
-from lib import common
-from api import user_api
-
-login_user = None
-print('src全局变量：', login_user, id(login_user))
+import os
+import random
 
 
 # 1. 注册功能
@@ -23,79 +20,73 @@ def register():
         password = input('请输入密码：').strip()
         re_password = input('请确认密码：').strip()
 
+
+
+        # 小的逻辑处理：两次密码是否一致
         if password == re_password:
-            flag, msg = user_api.register_api(username, password)
-            if flag:
-                print(msg)
+            import json
+            from conf import settings
+            # 存不是目的，目的是为了更方便的取数据，文件名：用户名.json
+            user_path = os.path.join(settings.USER_DATA_PATH, f'{username}.json')  # f-Strings格式化字符串
+
+            # 2. 查看用户是否存在
+            if not os.path.exists(user_path):
+                # 2.2 若用户文件不存在，则直接保存用户数据
+                with open(user_path, mode='w', encoding='utf-8') as f:
+                    json.dump(user_dic, f, ensure_ascii=False)
                 break
             else:
-                print(msg)
-
+                # 若用户文件存在，1）文件内容为空，则直接写入 2） 若文件内容不为空，则提示用户名已存在，请重新输入
+                try:
+                    with open(user_path, mode='r', encoding='utf-8') as f:
+                        user_dic = json.load(f)
+                    print('该用户已存在，请重新输入注册名')
+                    continue
+                except json.decoder.JSONDecodeError:
+                    with open(user_path, mode='w', encoding='utf-8') as f:
+                        json.dump(user_dic, f, ensure_ascii=False)
+                    break
         else:
             print('两次输入密码不一致，请重新输入')
+            continue
 
 
 # 2. 登录功能
 def login():
-    global login_user
-    while True:
-        username = input('请输入用户名：').strip()
-        password = input('请输入密码：').strip()
-
-        flag, msg = user_api.login_api(username, password)
-
-        if flag:
-            print(msg)
-            login_user = username
-            print('login函数', login_user, id(login_user))
-            break
-        else:
-            print(msg)
+    pass
 
 
 # 3. 查看余额
-@common.login_auth
 def check_balance():
-    print('查看')
-    print(login_user, id(login_user))
-    # balance = user_api.check_balance_api(login_user)
-    #
-    # print(f'用户{login_user} 账户余额为：{balance}')
+    pass
 
 
-@common.login_auth
 # 4. 提现功能
 def withdraw():
-    print('提现')
-    print(login_user)
+    pass
 
 
 # 5. 还款功能
-
 def replay():
     pass
 
 
 # 6. 转账功能
-
 def transfer():
     pass
 
 
 # 7. 查看流水功能
-
 def check_flow():
     pass
 
 
 # 8. 购物功能
-
 def shopping():
     pass
 
 
 # 9. 查看购物车
-
 def check_shop_car():
     pass
 
