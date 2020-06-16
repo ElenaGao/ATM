@@ -16,7 +16,7 @@ sys.path.append(os.path.dirname(__file__))
 
 # 开始执行项目函数
 if __name__ == '__main__':
+    from core import src
 
-    from core import src_面条版
+    src.run()
 
-    src_面条版.run()

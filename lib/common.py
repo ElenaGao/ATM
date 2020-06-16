@@ -8,25 +8,14 @@
 @date: 2020/6/12
 """
 import hashlib
-import os
 import random
 
 from functools import wraps
 
+import logging
 from logging import config
 
 from conf import settings
-
-# config.dictConfig(settings.LOGGING_DIC)
-# mylogger = getLogger('')
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# print(BASE_DIR)
-
-LIB_DIR = os.path.join(BASE_DIR, 'lib')
-
-DB_DIR = os.path.join(BASE_DIR, 'db')
-DB_FILE = os.path.join(DB_DIR, 'db_file')
 
 
 # 获取验证码
@@ -52,14 +41,28 @@ def get_pwd_md5(password):
 # 登录认证装饰器
 def login_auth(func):
     from core import src
-
+    @wraps(func)
     def wrapper(*args, **kwargs):
         if not src.login_user:
             print('未登录，请先登录！')
             src.login()
-            print('调用装饰器之后', src.login_user, id(src.login_user))
             res = func(*args, **kwargs)
-            print(f'执行{func}函数后', src.login_user, id(src.login_user))
+            return res
+        else:
+            res = func(*args, **kwargs)
             return res
 
     return wrapper
+
+
+# 日志功能
+def get_logger(log_type):
+    logging.config.dictConfig(settings.LOGGING_DIC)
+    logger = logging.getLogger(log_type)
+
+    return logger
+
+
+if __name__ == '__main__':
+    mylogger = get_logger('abc')
+    mylogger.info('hello')

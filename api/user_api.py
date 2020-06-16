@@ -10,6 +10,8 @@
 from db import db_handler
 from lib import common
 
+user_logger = common.get_logger('user')
+
 
 def register_api(username, password, balance=15000):
     if not username or not password:
@@ -32,8 +34,8 @@ def register_api(username, password, balance=15000):
         'locked': False,  # 用于记录用户是否被冻结
     }
     db_handler.save(user_dic)
-
-    return True, f'{username} 注册成功！'
+    msg = f'{username} 注册成功！'
+    return True, user_logger.info(msg)
 
 
 def login_api(username, password):
@@ -41,6 +43,9 @@ def login_api(username, password):
 
     if user_dic:
         password = common.get_pwd_md5(password)
+
+        if user_dic.get('locked'):
+            return False, '用户被冻结'
 
         if username == user_dic.get('username') and password == user_dic.get('password'):
             return True, f'{username} 登录成功！'

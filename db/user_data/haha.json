@@ -1,1 +1,1 @@
-{"username": "haha", "password": "0c1d4334f445e2cb84a7dee590314b54", "balance": 15000, "flow": [], "shop_car": {}, "locked": false}
+{"username": "haha", "password": "0c1d4334f445e2cb84a7dee590314b54", "balance": 5020.0, "flow": ["用户haha提现金额400成功,手续费为20.0", "用户haha 还款500成功", "用户haha支付30成功", "用户haha支付10000成功", "用户haha支付30成功"], "shop_car": {"果冻": [10, 4], "凤爪": [30, 2], "iphone": [10000, 1], "mac": [20000, 1]}, "locked": false}
